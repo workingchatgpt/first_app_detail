@@ -41,6 +41,11 @@
             margin-right: 10px;
         }
     </style>
+
+    <!-- 부트스트랩 및 jQuery, Popper.js CDN 추가 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -53,11 +58,6 @@
         </div>
         <div id="results"></div>
     </div>
-
-    <!-- 부트스트랩 및 jQuery, Popper.js CDN 추가 -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
         function searchBooks() {
@@ -118,4 +118,23 @@
             var detailedPageContent = `
                 <h2>${title}</h2>
                 <p><strong>Authors:</strong> ${authors}</p>
-                ${thumbnail ? `<img src="${thumbnail}" alt="${title}" class="img-fluid mb-3"/>
+                ${thumbnail ? `<img src="${thumbnail}" alt="${title}" class="img-fluid mb-3"/>` : ''}
+                <p><strong>Description:</strong> ${description}</p>
+                <p><a href="https://www.coupang.com/np/search?q=${encodeURIComponent(title)}" target="_blank" class="btn btn-primary">쿠팡에서 구매하기</a></p>
+            `;
+
+            // Open a new window or tab with detailed page content
+            var detailedPage = window.open('', '_blank');
+            detailedPage.document.write(detailedPageContent);
+        }
+
+        function handleKeyPress(event) {
+            // Check if the pressed key is Enter (key code 13)
+            if (event.key === 'Enter') {
+                // Trigger the searchBooks function when Enter is pressed
+                searchBooks();
+            }
+        }
+    </script>
+</body>
+</html>
