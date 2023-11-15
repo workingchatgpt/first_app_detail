@@ -39,6 +39,7 @@
         .book img {
             max-width: 100px;
             margin-right: 10px;
+            cursor: pointer;
         }
     </style>
 
@@ -57,6 +58,24 @@
             </div>
         </div>
         <div id="results" class="row"></div>
+    </div>
+
+    <!-- 상세 내용을 표시할 모달 -->
+    <div class="modal fade" id="bookDetailModal" tabindex="-1" role="dialog" aria-labelledby="bookDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookDetailModalLabel">책 상세 내용</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="bookDetailContent"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -119,16 +138,22 @@
                     var thumbnailImg = document.createElement('img');
                     thumbnailImg.src = book.thumbnail;
                     thumbnailImg.className = 'card-img-top';
+                    thumbnailImg.onclick = function() {
+                        showBookDetailModal(book.title, book.authors, book.thumbnail, book.description);
+                    };
                     cardBody.appendChild(thumbnailImg);
                 }
 
+                titleParagraph.onclick = function() {
+                    showBookDetailModal(book.title, book.authors, book.thumbnail, book.description);
+                };
+
+                authorsParagraph.onclick = function() {
+                    showBookDetailModal(book.title, book.authors, book.thumbnail, book.description);
+                };
+
                 cardBody.appendChild(titleParagraph);
                 cardBody.appendChild(authorsParagraph);
-
-                // Add click event to open detailed page
-                cardDiv.addEventListener('click', function() {
-                    showDetailedPage(book.title, book.authors, book.thumbnail, book.description);
-                });
 
                 // Add purchase link
                 var purchaseLink = document.createElement('a');
@@ -144,10 +169,25 @@
             });
         }
 
-        function showDetailedPage(title, authors, thumbnail, description) {
-            // You can customize this function to show a detailed page if needed.
-            // For now, it simply opens the purchase link in a new tab.
-            window.open('https://www.coupang.com/np/search?q=' + encodeURIComponent(title), '_blank');
+        function showBookDetailModal(title, authors, thumbnail, description) {
+            var modalTitle = document.getElementById('bookDetailModalLabel');
+            modalTitle.innerText = title + ' 상세 내용';
+
+            var modalContent = document.getElementById('bookDetailContent');
+            modalContent.innerHTML = '';
+
+            var modalBody = document.createElement('div');
+            modalBody.innerHTML = `
+                <h2>${title}</h2>
+                <p><strong>Authors:</strong> ${authors}</p>
+                ${thumbnail ? `<img src="${thumbnail}" alt="${title}" class="img-fluid mb-3"/>` : ''}
+                <p><strong>Description:</strong> ${description}</p>
+            `;
+
+            modalContent.appendChild(modalBody);
+
+            // Show the modal
+            $('#bookDetailModal').modal('show');
         }
 
         function handleKeyPress(event) {
