@@ -77,20 +77,16 @@
             books.forEach(book => {
                 var title = book.volumeInfo.title;
                 var authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author';
-                var thumbnail = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'No Image';
+                var thumbnail = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : null;
                 var description = book.volumeInfo.description ? book.volumeInfo.description : 'No Description';
 
                 var bookDiv = document.createElement('div');
                 bookDiv.className = 'book card';
 
-                var thumbnailImg = document.createElement('img');
-                thumbnailImg.src = thumbnail;
-                thumbnailImg.className = 'card-img-top';
-
                 var cardBody = document.createElement('div');
                 cardBody.className = 'card-body';
 
-                var titleParagraph = document.createElement('p');
+                var titleParagraph = document.createElement('h5');
                 titleParagraph.className = 'card-title';
                 titleParagraph.innerText = title;
 
@@ -98,9 +94,15 @@
                 authorsParagraph.className = 'card-text';
                 authorsParagraph.innerText = 'Authors: ' + authors;
 
+                if (thumbnail) {
+                    var thumbnailImg = document.createElement('img');
+                    thumbnailImg.src = thumbnail;
+                    thumbnailImg.className = 'card-img-top';
+                    bookDiv.appendChild(thumbnailImg);
+                }
+
                 cardBody.appendChild(titleParagraph);
                 cardBody.appendChild(authorsParagraph);
-                bookDiv.appendChild(thumbnailImg);
                 bookDiv.appendChild(cardBody);
 
                 // Add click event to open detailed page
@@ -116,23 +118,4 @@
             var detailedPageContent = `
                 <h2>${title}</h2>
                 <p><strong>Authors:</strong> ${authors}</p>
-                <img src="${thumbnail}" alt="${title}" class="img-fluid mb-3"/>
-                <p><strong>Description:</strong> ${description}</p>
-                <p><a href="https://www.coupang.com/np/search?q=${encodeURIComponent(title)}" target="_blank" class="btn btn-primary">쿠팡에서 구매하기</a></p>
-            `;
-
-            // Open a new window or tab with detailed page content
-            var detailedPage = window.open('', '_blank');
-            detailedPage.document.write(detailedPageContent);
-        }
-
-        function handleKeyPress(event) {
-            // Check if the pressed key is Enter (key code 13)
-            if (event.key === 'Enter') {
-                // Trigger the searchBooks function when Enter is pressed
-                searchBooks();
-            }
-        }
-    </script>
-</body>
-</html>
+                ${thumbnail ? `<img src="${thumbnail}" alt="${title}" class="img-fluid mb-3"/>
