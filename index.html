@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Search App</title>
+    <!-- 부트스트랩 CDN 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,10 +43,21 @@
     </style>
 </head>
 <body>
-    <h1>Book Search App</h1>
-    <input type="text" id="searchInput" placeholder="검색어를 입력하세요" onkeypress="handleKeyPress(event)">
-    <button id="searchButton" onclick="searchBooks()">검색</button>
-    <div id="results"></div>
+    <div class="container">
+        <h1 class="mt-5 mb-4">Book Search App</h1>
+        <div class="input-group mb-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="검색어를 입력하세요" onkeypress="handleKeyPress(event)">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" id="searchButton" onclick="searchBooks()">검색</button>
+            </div>
+        </div>
+        <div id="results"></div>
+    </div>
+
+    <!-- 부트스트랩 및 jQuery, Popper.js CDN 추가 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
         function searchBooks() {
@@ -68,20 +81,27 @@
                 var description = book.volumeInfo.description ? book.volumeInfo.description : 'No Description';
 
                 var bookDiv = document.createElement('div');
-                bookDiv.className = 'book';
+                bookDiv.className = 'book card';
 
                 var thumbnailImg = document.createElement('img');
                 thumbnailImg.src = thumbnail;
+                thumbnailImg.className = 'card-img-top';
+
+                var cardBody = document.createElement('div');
+                cardBody.className = 'card-body';
 
                 var titleParagraph = document.createElement('p');
-                titleParagraph.innerText = 'Title: ' + title;
+                titleParagraph.className = 'card-title';
+                titleParagraph.innerText = title;
 
                 var authorsParagraph = document.createElement('p');
+                authorsParagraph.className = 'card-text';
                 authorsParagraph.innerText = 'Authors: ' + authors;
 
+                cardBody.appendChild(titleParagraph);
+                cardBody.appendChild(authorsParagraph);
                 bookDiv.appendChild(thumbnailImg);
-                bookDiv.appendChild(titleParagraph);
-                bookDiv.appendChild(authorsParagraph);
+                bookDiv.appendChild(cardBody);
 
                 // Add click event to open detailed page
                 bookDiv.addEventListener('click', function() {
@@ -96,9 +116,9 @@
             var detailedPageContent = `
                 <h2>${title}</h2>
                 <p><strong>Authors:</strong> ${authors}</p>
-                <img src="${thumbnail}" alt="${title}"/>
+                <img src="${thumbnail}" alt="${title}" class="img-fluid mb-3"/>
                 <p><strong>Description:</strong> ${description}</p>
-                <p><a href="https://www.coupang.com/np/search?q=${encodeURIComponent(title)}" target="_blank">쿠팡에서 구매하기</a></p>
+                <p><a href="https://www.coupang.com/np/search?q=${encodeURIComponent(title)}" target="_blank" class="btn btn-primary">쿠팡에서 구매하기</a></p>
             `;
 
             // Open a new window or tab with detailed page content
