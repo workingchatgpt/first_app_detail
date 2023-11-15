@@ -56,7 +56,7 @@
                 <button class="btn btn-primary" type="button" id="searchButton" onclick="searchBooks()">검색</button>
             </div>
         </div>
-        <div id="results"></div>
+        <div id="results" class="row"></div>
     </div>
 
     <script>
@@ -99,7 +99,10 @@
 
             uniqueBooks.forEach(book => {
                 var bookDiv = document.createElement('div');
-                bookDiv.className = 'book card';
+                bookDiv.className = 'col-lg-3 col-md-4 col-sm-6';
+
+                var cardDiv = document.createElement('div');
+                cardDiv.className = 'card mb-4';
 
                 var cardBody = document.createElement('div');
                 cardBody.className = 'card-body';
@@ -116,18 +119,27 @@
                     var thumbnailImg = document.createElement('img');
                     thumbnailImg.src = book.thumbnail;
                     thumbnailImg.className = 'card-img-top';
-                    bookDiv.appendChild(thumbnailImg);
+                    cardBody.appendChild(thumbnailImg);
                 }
 
                 cardBody.appendChild(titleParagraph);
                 cardBody.appendChild(authorsParagraph);
-                bookDiv.appendChild(cardBody);
 
                 // Add click event to open detailed page
-                bookDiv.addEventListener('click', function() {
+                cardDiv.addEventListener('click', function() {
                     showDetailedPage(book.title, book.authors, book.thumbnail, book.description);
                 });
 
+                // Add purchase link
+                var purchaseLink = document.createElement('a');
+                purchaseLink.href = 'https://www.coupang.com/np/search?q=' + encodeURIComponent(book.title);
+                purchaseLink.target = '_blank';
+                purchaseLink.innerText = '쿠팡에서 구매하기';
+                purchaseLink.className = 'btn btn-primary mt-2';
+                cardBody.appendChild(purchaseLink);
+
+                cardDiv.appendChild(cardBody);
+                bookDiv.appendChild(cardDiv);
                 resultsContainer.appendChild(bookDiv);
             });
         }
