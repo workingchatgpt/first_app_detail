@@ -74,12 +74,30 @@
             var resultsContainer = document.getElementById('results');
             resultsContainer.innerHTML = '';
 
+            var uniqueBooks = [];
+
             books.forEach(book => {
+                var id = book.id;
                 var title = book.volumeInfo.title;
                 var authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author';
                 var thumbnail = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : null;
                 var description = book.volumeInfo.description ? book.volumeInfo.description : 'No Description';
 
+                // Check if the book with the same id is already in the uniqueBooks array
+                var isDuplicate = uniqueBooks.some(uniqueBook => uniqueBook.id === id);
+
+                if (!isDuplicate) {
+                    uniqueBooks.push({
+                        id: id,
+                        title: title,
+                        authors: authors,
+                        thumbnail: thumbnail,
+                        description: description
+                    });
+                }
+            });
+
+            uniqueBooks.forEach(book => {
                 var bookDiv = document.createElement('div');
                 bookDiv.className = 'book card';
 
@@ -88,15 +106,15 @@
 
                 var titleParagraph = document.createElement('h5');
                 titleParagraph.className = 'card-title';
-                titleParagraph.innerText = title;
+                titleParagraph.innerText = book.title;
 
                 var authorsParagraph = document.createElement('p');
                 authorsParagraph.className = 'card-text';
-                authorsParagraph.innerText = 'Authors: ' + authors;
+                authorsParagraph.innerText = 'Authors: ' + book.authors;
 
-                if (thumbnail) {
+                if (book.thumbnail) {
                     var thumbnailImg = document.createElement('img');
-                    thumbnailImg.src = thumbnail;
+                    thumbnailImg.src = book.thumbnail;
                     thumbnailImg.className = 'card-img-top';
                     bookDiv.appendChild(thumbnailImg);
                 }
@@ -107,7 +125,7 @@
 
                 // Add click event to open detailed page
                 bookDiv.addEventListener('click', function() {
-                    showDetailedPage(title, authors, thumbnail, description);
+                    showDetailedPage(book.title, book.authors, book.thumbnail, book.description);
                 });
 
                 resultsContainer.appendChild(bookDiv);
