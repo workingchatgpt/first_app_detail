@@ -42,7 +42,7 @@
 </head>
 <body>
     <h1>Book Search App</h1>
-    <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+    <input type="text" id="searchInput" placeholder="검색어를 입력하세요" onkeypress="handleKeyPress(event)">
     <button id="searchButton" onclick="searchBooks()">검색</button>
     <div id="results"></div>
 
@@ -104,6 +104,14 @@
             // Open a new window or tab with detailed page content
             var detailedPage = window.open('', '_blank');
             detailedPage.document.write(detailedPageContent);
+        }
+
+        function handleKeyPress(event) {
+            // Check if the pressed key is Enter (key code 13)
+            if (event.key === 'Enter') {
+                // Trigger the searchBooks function when Enter is pressed
+                searchBooks();
+            }
         }
     </script>
 </body>
