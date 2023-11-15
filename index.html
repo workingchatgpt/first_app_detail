@@ -145,17 +145,9 @@
         }
 
         function showDetailedPage(title, authors, thumbnail, description) {
-            var detailedPageContent = `
-                <h2>${title}</h2>
-                <p><strong>Authors:</strong> ${authors}</p>
-                ${thumbnail ? `<img src="${thumbnail}" alt="${title}" class="img-fluid mb-3"/>` : ''}
-                <p><strong>Description:</strong> ${description}</p>
-                <p><a href="https://www.coupang.com/np/search?q=${encodeURIComponent(title)}" target="_blank" class="btn btn-primary">쿠팡에서 구매하기</a></p>
-            `;
-
-            // Open a new window or tab with detailed page content
-            var detailedPage = window.open('', '_blank');
-            detailedPage.document.write(detailedPageContent);
+            // You can customize this function to show a detailed page if needed.
+            // For now, it simply opens the purchase link in a new tab.
+            window.open('https://www.coupang.com/np/search?q=' + encodeURIComponent(title), '_blank');
         }
 
         function handleKeyPress(event) {
